@@ -4,14 +4,13 @@
 //  Created by julian on 13/03/2018.
 //
 
-NSString *const IV = @"AEE0715D0778A4E4";
-NSString *const KEY =  @"9336365521W5F092BB5909E8E033BC69";
-
-
 #import "SecurityUtils.h"
 
 
 @implementation SecurityUtils
+
+static NSString *const IV = @"AEE0715D0778A4E4";
+static NSString *const KEY = @"9336365521W5F092BB5909E8E033BC69";
 
 
 + (NSString *)encrypt:(NSString *)plainText error:(NSError **)error {
@@ -33,13 +32,13 @@ NSString *const KEY =  @"9336365521W5F092BB5909E8E033BC69";
         NSMutableData  *dataOut    = [NSMutableData dataWithLength:dataIn.length + kCCBlockSizeBlowfish];
         NSData *key =[KEY dataUsingEncoding:NSUTF8StringEncoding];
         NSData *iv = [IV dataUsingEncoding:NSUTF8StringEncoding];
-        
+
         ccStatus = CCCrypt( kCCEncrypt_or_kCCDecrypt,
                            kCCAlgorithmAES,
                            kCCOptionPKCS7Padding,
                            key.bytes,
                            key.length,
-                           (iv)?nil:iv.bytes,
+                           (iv)? iv.bytes: nil,
                            dataIn.bytes,
                            dataIn.length,
                            dataOut.mutableBytes,
